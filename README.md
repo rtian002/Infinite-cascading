@@ -26,3 +26,33 @@ function get_subcase(arr, reg, code = null) { //长码+短码通用
 	return res;
 }
 ```
+
+
+```
+var citys=city.map(n=>n.split(','));
+var data={};
+for(let c of citys){
+	data[c[0]]={'code':c[0],'mc':c[1]};
+}
+var reg=[0,2,4,6,9,12];
+
+function get_subchild(jsondata, level_reg, level_code = null) { //长码+短码通用
+	let res = [];
+	let parent; //父级
+	let current; //当前级别
+	let child; //下属级别
+	let data_index = Object.keys(jsondata);
+	let index = !level_code ? 0 : level_reg.indexOf(level_code.length);
+	data_index.forEach((code) => {
+		parent = !level_code ? null : code.slice(0, level_reg[index]);
+		current = code.slice(level_reg[index], reg[index + 1]);
+		child = code.slice(level_reg[index + 1]);
+		if (parent == level_code && current != 0 && child == 0) {
+			let current_code = parent == null ? current : parent + current;
+			if(current_code!=code)current_code=current_code.padEnd(12,'0');
+			res.push(jsondata[current_code]);
+		}
+	});
+	return res;
+}
+```
